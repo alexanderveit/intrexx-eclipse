@@ -1,0 +1,41 @@
+
+plugins {
+    id 'application'
+    id 'eclipse'
+}
+
+
+ext.INTREXX_HOME = '/opt/intrexx'
+ext.PORTAL_DIR   = '/opt/intrexx/org/test'
+
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+
+dependencies {
+    implementation files("$INTREXX_HOME/lib/update/")
+    implementation fileTree(dir: "$INTREXX_HOME/lib/", include: ['*.jar'])
+    implementation fileTree(dir: "$INTREXX_HOME/lib/standalone/", include: ['*.jar'])
+}
+
+
+tasks.run.workingDir  = PORTAL_DIR
+tasks.run.environment = ['INTREXX_HOME': INTREXX_HOME]
+
+
+application {
+    mainClass = 'de.uplanet.lucy.server.portalserver.PortalService'
+
+    applicationDefaultJvmArgs = [
+        '-server',
+        '-Djava.security.auth.login.config=file:internal/cfg/LucyAuth.cfg',
+        '-Djavax.net.ssl.trustStore=internal/cfg/cacerts',
+        '-Dfile.encoding=UTF-8',
+        '-Dgroovy.source.encoding=UTF-8',
+        '-Djava.io.tmpdir=internal/tmp',
+        '-Djava.locale.providers=COMPAT,SPI',
+        '-Dde.uplanet.lucy.logPath=log',
+        '-Djava.library.path=../../bin/linux/amd64'
+    ]
+}
