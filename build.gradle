@@ -24,6 +24,13 @@ tasks.run.workingDir  = PORTAL_DIR
 tasks.run.environment = ['INTREXX_HOME': INTREXX_HOME]
 
 
+eclipse {
+    classpath {
+        plusConfigurations += [configurations.compileClasspath]
+    }
+}
+
+
 application {
     mainClass = 'de.uplanet.lucy.server.portalserver.PortalService'
 
